@@ -13,3 +13,4 @@ def display(image):
 def reset():
     oled.fill(0)
     oled.show()
+

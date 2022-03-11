@@ -7,7 +7,10 @@ def get_usd_price(symbol):
     url = baseurl + '/api/v3/ticker/price'
     params = {'symbol': symbol + 'USDT'}
     response = requests.get(url, params=params)
-    price = response.json()['price']
+    try:
+        price = response.json()['price']
+    except KeyError:
+        return None
     try:
         round(float(price), 2)
     except ValueError:

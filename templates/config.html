@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Configuration</title>
+    <style>
+        .configfrom {
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .submit-button {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<body>
+<div class="configfrom">
+    <form action="" method="POST">
+        <label for="symbol0">Symbol 1:</label><br>
+        <input type="text" id="symbol0" name="symbol0" value="BTC"><br>
+        <label for="symbol1">Symbol 2:</label><br>
+        <input type="text" id="symbol1" name="symbol1" value="ETH"><br>
+        <label for="symbol2">Symbol 3:</label><br>
+        <input type="text" id="symbol2" name="symbol2" value="BNB"><br>
+        <label for="symbol3">Symbol 4:</label><br>
+        <input type="text" id="symbol3" name="symbol3" value="FTT"><br>
+        <label for="symbol4">Symbol 5:</label><br>
+        <input type="text" id="symbol4" name="symbol4" value="SHIB"><br>
+        <br/>
+        <div class="submit-button">
+            <input type="submit" value="SAVE">
+        </div>
+    </form>
+</div>
+<div class="configfrom indexform">
+    <form action="/setindex" method="POST">
+        <label for="currencies">Switch the currency now displayed:</label>
+        <select id="currencies" name="currencies">
+            <option value="0">1</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+            <option value="3">4</option>
+            <option value="4">5</option>
+        </select>
+        <div class="submit-button">
+            <input type="submit" value="SAVE">
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
