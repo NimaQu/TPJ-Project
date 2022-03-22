@@ -4,6 +4,7 @@ import screen
 import threading
 import logging
 import var
+import sound
 from time import sleep
 from configparser import ConfigParser
 from waitress import serve
@@ -26,24 +27,40 @@ def start_web():
         serve(webapi.app, host=host, port=port)
 
 
-def start_monitor():
+def display_price():
     while True:
-        symbol = cf.get('config', 'symbol' + str(var.symbol_index))
         sleep(1)
+        symbol = cf.get('config', 'symbol' + str(var.symbol_index))
         image = Image.price(symbol)
         screen.display(image)
 
 
+def monitor_fluctuations():
+    while True:
+        sleep(5)
+        symbol = cf.get('config', 'symbol' + str(var.symbol_index))
+        price_before = float(binance.get_usd_price_before(symbol, var.monitor_time))
+        price_now = float(binance.get_usd_price(symbol))
+        fluctuation = abs(price_now - price_before) / price_before * 100
+        print(fluctuation)
+        print(abs(price_now - price_before))
+        if fluctuation > cf.getfloat('monitor', 'fluctuation_threshold_percent') or abs(price_now - price_before) > cf.getfloat('monitor', 'fluctuation_threshold'):
+            sound.play()
+            sleep(cf.getint('monitor', 'alert_interval'))
+
+
 def main():
     # start web
-    tt = threading.Thread(
-        target=start_web, name="WebThread")
-    tt.daemon = True
+    webt = threading.Thread(
+        target=start_web, name="WebThread", daemon=True)
     logging.info('Starting webapi ....')
-    tt.start()
-
+    fluctuationt = threading.Thread(target=monitor_fluctuations, name="FluctuationThread", daemon=True)
     try:
-        start_monitor()
+        webt.start()
+        logging.info('Webapi started')
+        fluctuationt.start()
+        logging.info('Fluctuation thread started')
+        display_price()
     except KeyboardInterrupt:
         screen.reset()
         print('\nExited')
