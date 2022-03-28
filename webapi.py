@@ -1,6 +1,8 @@
 from flask import Flask, request, render_template
 from configparser import ConfigParser
-import var
+import Global
+import Image
+import screen
 import binance
 
 app = Flask(__name__)
@@ -18,7 +20,9 @@ def set_config():
         for key in request.form:
             if binance.get_usd_price(request.form[key]) is None:
                 return "Invalid currency: " + request.form[key]
-        return "OK"
+            Global.var[key] = request.form[key]
+    Global.var.save()
+    return "OK"
 
 
 @app.route("/setindex", methods=["POST"])
@@ -27,9 +31,10 @@ def set_index():
         int(request.form["currencies"])
     except ValueError:
         return "Invalid number of currencies"
-    print(var.symbol_index)
-    var.symbol_index = request.form["currencies"]
-    print(var.symbol_index)
+    Global.var['symbol_index'] = symbol_index = request.form["currencies"]
+    symbol_index = int(symbol_index)
+    image = Image.position(symbol_index + 1, cf.get('config', 'symbol' + str(symbol_index)))
+    screen.display(image)
     return "OK"
 
 

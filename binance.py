@@ -21,13 +21,15 @@ def get_usd_price(symbol):
 
 def get_usd_price_before(symbol, _time):
     url = baseurl + '/api/v3/aggTrades'
-    start_time = int((time.time() - _time) * 1000)
+    start_time = int((time.time() - float(_time)) * 1000)
     end_time = start_time + 10000
     params = {'symbol': symbol + 'USDT', 'startTime': start_time, 'endTime': end_time, 'limit': 1}
     response = requests.get(url, params=params)
     try:
         price = response.json()[0]['p']
     except KeyError:
+        return None
+    except IndexError:
         return None
     try:
         round(float(price), 2)

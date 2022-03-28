@@ -16,6 +16,5 @@ def play_sound():
 
 
 if __name__ == "__main__":
-    play()
-    time.sleep(10)
-    print("Done!")
+    while True:
+        play_sound()
