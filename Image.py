@@ -1,7 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 import binance
 
-
 def price(symbol):
     image = Image.new("1", (128, 64))
     draw = ImageDraw.Draw(image)
