@@ -59,6 +59,8 @@ def display_price():
                 Global.var['pause'] = False
         symbol = cf.get('config', 'symbol' + str(Global.var['symbol_index']))
         image = Image.price(symbol)
+        if image is None:
+            continue
         screen.display(image)
         sleep(1)
 
@@ -79,7 +81,7 @@ def monitor_fluctuations():
             price_before = float(binance.get_usd_price_before(symbol, Global.var['monitor_time']))
             price_now = float(binance.get_usd_price(symbol))
             fluctuation = abs(price_now - price_before) / price_before * 100
-        except TypeError:
+        except (TypeError, ValueError):
             continue
         if fluctuation > cf.getfloat('monitor', 'fluctuation_threshold_percent') or abs(price_now - price_before) > cf.getfloat('monitor', 'fluctuation_threshold'):
             sound.play()

@@ -7,7 +7,10 @@ def price(symbol):
     font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 30)
     font2 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 26)
     price_text = binance.get_usd_price(symbol)
-    price_text = str(int(float(price_text)))
+    try:
+        price_text = str(int(float(price_text)))
+    except (ValueError, TypeError):
+        return None
     # draw price
     text_width = font.getsize(price_text)
     width = int((128 - text_width[0]) / 2)
