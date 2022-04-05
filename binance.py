@@ -8,9 +8,12 @@ def get_usd_price(symbol):
     url = baseurl + '/api/v3/ticker/price'
     params = {'symbol': symbol + 'USDT'}
     try:
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=5)
     except requests.exceptions.ConnectionError:
-        print('ConnectionError')
+        logging.error('ConnectionError')
+        return None
+    except requests.exceptions.Timeout:
+        logging.error('Timeout')
         return None
     try:
         price = response.json()['price']
@@ -29,9 +32,12 @@ def get_usd_price_before(symbol, _time):
     end_time = start_time + 10000
     params = {'symbol': symbol + 'USDT', 'startTime': start_time, 'endTime': end_time, 'limit': 1}
     try:
-        response = requests.get(url, params=params)
+        response = requests.get(url, params=params, timeout=5)
     except requests.exceptions.ConnectionError:
-        print('ConnectionError')
+        logging.error('Connection Error')
+        return None
+    except requests.exceptions.Timeout:
+        logging.error('Request Timeout')
         return None
     try:
         price = response.json()[0]['p']

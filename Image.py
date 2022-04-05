@@ -42,6 +42,20 @@ def position(number, symbol):
     draw.text((width, 30), symbol, font=font2, fill=255)
     return image
 
+def status(ip_address, port):
+    # Create blank image for drawing.
+    image = Image.new("1", (128, 64))
+    draw = ImageDraw.Draw(image)
+
+    # Load a font in 2 different sizes.
+    font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 14)
+    font2 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf", 11)
+    # Draw the text
+    intro = "To Configuration\nOpen in browser:\n"
+    draw.text((0, 46), ip_address + ":" + port, font=font2, fill=255)
+    draw.text((0, 0), intro, font=font, fill=255)
+    return image
+
 
 def main():
     pass

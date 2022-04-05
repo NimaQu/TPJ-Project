@@ -5,6 +5,7 @@ import threading
 import logging
 import sound
 import Global
+import status
 from time import sleep
 from configparser import ConfigParser
 from waitress import serve
@@ -13,7 +14,7 @@ import RPi.GPIO as GPIO
 
 cf = ConfigParser()
 cf.read('config.ini', encoding='utf-8')
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 Global.init(cf)
 tt_lock = threading.Lock()
 Global.var['pause'] = False
@@ -26,11 +27,14 @@ def valueChanged(value, direction):
         if symbol_index > 0:
             Global.var['symbol_index'] = symbol_index = symbol_index - 1
     elif direction == 'R':
-        if symbol_index < 4:
+        if symbol_index < 5:
             Global.var['symbol_index'] = symbol_index = symbol_index + 1
     else:
         return
-    image = Image.position(symbol_index + 1, cf.get('config', 'symbol' + str(symbol_index)))
+    if symbol_index == 5:
+        image = Image.position(symbol_index + 1, 'Info Page')
+    else:
+        image = Image.position(symbol_index + 1, cf.get('config', 'symbol' + str(symbol_index)))
     screen.display(image)
 
 
@@ -57,9 +61,14 @@ def display_price():
                 continue
             else:
                 Global.var['pause'] = False
+        if int(Global.var['symbol_index']) == 5:
+            status.show()
+            sleep(1)
+            continue
         symbol = cf.get('config', 'symbol' + str(Global.var['symbol_index']))
         image = Image.price(symbol)
         if image is None:
+            sleep(1)
             continue
         screen.display(image)
         sleep(1)
@@ -75,7 +84,9 @@ def monitor_fluctuations():
                 continue
             else:
                 Global.var['pause'] = False
-
+        if int(Global.var['symbol_index']) == 5:
+            sleep(1)
+            continue
         symbol = cf.get('config', 'symbol' + str(Global.var['symbol_index']))
         try:
             price_before = float(binance.get_usd_price_before(symbol, Global.var['monitor_time']))
