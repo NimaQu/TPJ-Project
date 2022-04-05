@@ -1,0 +1,17 @@
+[Unit]
+Description=Live Crypto Price Monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root/TPJ-Project
+ExecStart=/root/TPJ-Project/venv/bin/python /root/TPJ-Project/main.py
+Restart=always
+PrivateTmp=True
+KillSignal=SIGINT
+TimeoutStopSec=10s
+StartLimitInterval=400
+
+[Install]
+WantedBy=multi-user.target

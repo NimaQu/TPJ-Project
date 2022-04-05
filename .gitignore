@@ -141,5 +141,5 @@ cython_debug/
 #idea
 .idea/
 
-#database
-data.sqlite
+#config
+config.ini
