@@ -1,6 +1,5 @@
 import pygame
 import threading
-import time
 pygame.mixer.init()
 pygame.mixer.music.load("music.mp3")
 

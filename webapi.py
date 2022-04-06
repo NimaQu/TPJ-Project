@@ -37,6 +37,30 @@ def set_index():
     screen.display(image)
     return "OK"
 
+@app.route("/setalarm", methods=["POST"])
+def set_alarm():
+    try:
+        percent = float(request.form["percent"])
+        time = int(request.form["time"])
+        value = float(request.form["Value"])
+        alert_interval = int(request.form["alert_interval"])
+    except ValueError:
+        return "Invalid Input"
+    if percent < 0 or percent > 100:
+        return "Invalid percent input"
+    if time < 0:
+        return "Invalid time input"
+    if value < 0:
+        return "Invalid value input"
+    if alert_interval < 0:
+        return "Invalid alert interval input"
+    Global.var['fluctuation_threshold_percent'] = percent
+    Global.var['monitor_time'] = time
+    Global.var['fluctuation_threshold'] = value
+    Global.var['alert_interval'] = alert_interval
+    Global.var.save()
+    return "OK"
+
 
 if __name__ == "__main__":
     app.secret_key = 'dsflkasjfsskk123211'

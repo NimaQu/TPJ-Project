@@ -13,7 +13,7 @@ def get_usd_price(symbol):
         logging.error('ConnectionError')
         return None
     except requests.exceptions.Timeout:
-        logging.error('Timeout')
+        logging.error('Request Timeout')
         return None
     try:
         price = response.json()['price']

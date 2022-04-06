@@ -53,6 +53,21 @@
         </div>
     </form>
 </div>
+<div class="configfrom indexform alarmform">
+    <form action="/setalarm" method="POST">
+        <label for="percent">Fluctuation Percent %:</label><br>
+        <input type="text" id="percent" name="percent" value="5"><br>
+        <label for="Value">Fluctuation Value:</label><br>
+        <input type="text" id="Value" name="Value" value="1000"><br>
+        <label for="time">Monitor Time (seconds):</label><br>
+        <input type="text" id="time" name="time" value="300"><br>
+        <label for="alert_interval">Alert Interval (seconds):</label><br>
+        <input type="text" id="alert_interval" name="alert_interval" value="300"><br>
+        <div class="submit-button">
+            <input type="submit" value="SAVE">
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

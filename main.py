@@ -94,9 +94,9 @@ def monitor_fluctuations():
             fluctuation = abs(price_now - price_before) / price_before * 100
         except (TypeError, ValueError):
             continue
-        if fluctuation > cf.getfloat('monitor', 'fluctuation_threshold_percent') or abs(price_now - price_before) > cf.getfloat('monitor', 'fluctuation_threshold'):
+        if fluctuation > float(Global.var['fluctuation_threshold_percent']) or abs(price_now - price_before) > float(Global.var['fluctuation_threshold']):
             sound.play()
-            sleep(cf.getint('monitor', 'alert_interval'))
+            sleep(int(Global.var['alert_interval']))
         sleep(5)
 
 
